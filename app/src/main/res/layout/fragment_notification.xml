@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/baseline_person_24"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"/>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="John Doe"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_below="@id/profileImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/userEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="john.doe@example.com"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_below="@id/username"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnViewRequestedTrips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Requested Trips"
+        android:layout_below="@id/userEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"/>
+
+    <Button
+        android:id="@+id/btnViewHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View History Trips"
+        android:layout_below="@+id/btnViewRequestedTrips"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"/>
+
+</RelativeLayout>

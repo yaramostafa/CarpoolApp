@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">DriverSide</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- SignIn page -->
+    <string name="SignUpBtn">Or Sign up now</string>
+    <string name="Login">Log in</string>
+    <string name="username">Email</string>
+    <string name="password">Password</string>
+    <!-- SignUp page -->
+    <string name="UniID">UNI ID</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone Number</string>
+    <!-- Home Fragment -->
+    <string-array name="time">
+        <item>7:30 AM</item>
+        <item>5:30 PM</item>
+    </string-array>
+    <string name="carNum">Enter car number</string>
+    <string name="maxNum">Enter riders number</string>
+    <string name="price">Enter trip price</string>
+    <string name="loc1">Enter location (from) </string>
+    <string name="loc2">Enter destination (to) </string>
+
+</resources>
