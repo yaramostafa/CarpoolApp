@@ -1,0 +1,23 @@
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#2196F3"
+    android:elevation="4dp"
+    app:titleMarginStart="20dp"
+    app:logo="@drawable/baseline_directions_car_24"
+    android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:menu="@menu/main_menu"
+        app:title="@string/app_title"
+        app:titleMargin="7dp"
+        app:titleMarginStart="20dp"
+        android:text="Carpool"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+</androidx.appcompat.widget.Toolbar>

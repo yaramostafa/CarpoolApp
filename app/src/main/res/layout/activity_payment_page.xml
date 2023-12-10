@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/app_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Payment"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+    </androidx.appcompat.widget.Toolbar>
+    <TextView
+        android:id="@+id/paymentDetailsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Trip Details:"
+        android:layout_marginStart="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <!-- Additional TextViews for payment details -->
+    <TextView
+        android:id="@+id/paymentFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Detail 1"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/paymentTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Detail 2"
+        android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/paymentPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Detail 3"
+        android:textSize="16sp"/>
+
+    <RadioGroup
+        android:id="@+id/paymentRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <!-- TextView to display payment details -->
+
+
+        <!-- Card for Pay with Card -->
+        <RadioButton
+            android:id="@+id/radioButtonCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:buttonTint="@color/blue"
+            android:drawableLeft="@drawable/baseline_credit_card_24"
+            android:drawablePadding="8dp"
+            android:text="Pay with Card"
+            android:textSize="16sp"
+            android:checked="false"/>
+
+        <RadioButton
+            android:id="@+id/radioButtonCash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:buttonTint="@color/blue"
+            android:drawableLeft="@drawable/baseline_money_24"
+            android:drawablePadding="8dp"
+            android:text="Pay with Cash"
+            android:textSize="16sp"
+            android:checked="false"/>
+
+    </RadioGroup>
+    <!-- Button for Make Payment -->
+    <Button
+        android:id="@+id/payBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/blue"
+        android:text="Make Payment" />
+
+</LinearLayout>
+
+

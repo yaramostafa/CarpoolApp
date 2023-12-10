@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Carpool</string>
+    <string name="app_title">  ASU carpool</string>
+    <!-- SignIn page -->
+    <string name="RegBtn">Or Sign up now</string>
+    <string name="Login">Log in</string>
+    <string name="username">Email</string>
+    <string name="password">Password</string>
+    <!-- SignUp page -->
+    <string name="username1">Uni ID</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone Number</string>
+    <!-- Trip List page -->
+
+    <string name="bookNow">Choose your trip. </string>
+    <string name="tripBtn">Book trip</string>
+    <!-- Payment page -->
+    <string name="CardNumber">Card Number</string>
+    <string name="CardDate">Expiry Date (MM/YY)</string>
+    <string name="Cvv">CVV</string>
+    <string name="cardname">Name on Card</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

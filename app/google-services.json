@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "188191854255",
+    "firebase_url": "https://user-side-carpool-default-rtdb.firebaseio.com",
+    "project_id": "user-side-carpool",
+    "storage_bucket": "user-side-carpool.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188191854255:android:fd425426391396a34a4e5a",
+        "android_client_info": {
+          "package_name": "com.example.driverside"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVEW0nj111H6qxei_5KpFTtut-ftxdhqY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188191854255:android:8c7a3cfd9e02611b4a4e5a",
+        "android_client_info": {
+          "package_name": "com.example.myproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVEW0nj111H6qxei_5KpFTtut-ftxdhqY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
