@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "myProject"
+rootProject.name = "DriverSide"
 include ':app'

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/cardView"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+app:cardCornerRadius="8dp"
+app:cardElevation="4dp"
+android:layout_margin="8dp">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/Pickup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pickup: "/>
+
+        <TextView
+            android:id="@+id/DropOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drop-off: "/>
+
+        <TextView
+            android:id="@+id/carNumberHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Car Number: "/>
+
+        <TextView
+            android:id="@+id/timeHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time: "/>
+
+        <TextView
+            android:id="@+id/priceHist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price: "/>
+
+        <TextView
+            android:id="@+id/statusTrip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status: "
+            android:textSize="18dp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnComplete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#008000"
+            android:text="Completed" />
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:text="Cancel" />
+    </LinearLayout>
+
+</LinearLayout>
+</androidx.cardview.widget.CardView>

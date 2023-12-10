@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/app_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:layout_gravity="center" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/app_toolbar"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/aboutUs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="About us"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:background="#7393B3"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/Report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Report an issue"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:background="#7393B3"
+            android:layout_marginBottom="10dp" />
+
+        <Button
+            android:id="@+id/logOutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_logout_24"
+            android:drawablePadding="8dp"
+            android:text="Log Out"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:background="#7393B3" /> <!-- Change the background color to grey (#808080) -->
+
+    </LinearLayout>
+</RelativeLayout>
