@@ -1,8 +1,6 @@
 package com.example.myproject;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +17,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class UserProfile extends AppCompatActivity {
     TextView email, name;
-    public static AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +25,6 @@ public class UserProfile extends AppCompatActivity {
 
         email = findViewById(R.id.emailTextView);
         name = findViewById(R.id.nameTextView);
-        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "user-profile-db")
-                .build();
 
         // Get the current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

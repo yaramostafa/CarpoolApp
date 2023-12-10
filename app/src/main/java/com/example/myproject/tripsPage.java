@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 public class tripsPage extends AppCompatActivity {
     DatabaseReference ref;
     ArrayList<tripsData> list;
@@ -75,7 +77,7 @@ public class tripsPage extends AppCompatActivity {
         });
 
 
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.orderByChild("timeTrip").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
@@ -87,6 +89,7 @@ public class tripsPage extends AppCompatActivity {
                         list.add(trip);
                     }
                 }
+                //Collections.sort(list, new TimeComparator());
                 myAdapter.notifyDataSetChanged();
             }
             @Override
