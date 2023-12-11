@@ -1,5 +1,6 @@
 package com.example.myproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,14 +19,15 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class paymentPage extends AppCompatActivity {
     Button payBtn1;
     RadioGroup radio;
-    FirebaseDatabase database;
-    DatabaseReference reference,ref;
+    DatabaseReference orderReference,tripReference;
     static int id = 0;
+    tripsData trip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,8 @@ public class paymentPage extends AppCompatActivity {
         setContentView(R.layout.activity_payment_page);
 
         radio=findViewById(R.id.paymentRadioGroup);
-
+        tripReference = FirebaseDatabase.getInstance().getReference("trips");
+        orderReference = FirebaseDatabase.getInstance().getReference("orders");
 
 
         String to = getIntent().getStringExtra("from_content");
@@ -45,6 +48,7 @@ public class paymentPage extends AppCompatActivity {
         String driverState = getIntent().getStringExtra("driver_tripState");;
         String driverName=getIntent().getStringExtra("driver_content");
         String ridersNum=getIntent().getStringExtra("ridersNum");
+        String tripid=getIntent().getStringExtra("tripsID");
 
         // Display the received text content in a TextView or use it as needed
         TextView textViewReceived = findViewById(R.id.paymentTo);
@@ -56,10 +60,7 @@ public class paymentPage extends AppCompatActivity {
 
         payBtn1 = findViewById(R.id.payBtn);
 
-        // Retrieve the last order ID from the database
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference("orders");
-        reference.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+        orderReference.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
@@ -75,54 +76,47 @@ public class paymentPage extends AppCompatActivity {
                 // Handle database error
             }
         });
+        Query checkTripDatabase = tripReference.orderByChild("tripID").equalTo(tripid);
+        checkTripDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    trip =  snapshot.child(tripid).getValue(tripsData.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         payBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (radio.getCheckedRadioButtonId() == -1){
-                    Toast.makeText(getApplicationContext(), "Please select a Payment option", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please select a Payment method", Toast.LENGTH_SHORT).show();
                     radio.requestFocus();
+                    return;
+                } else if(Integer.parseInt(trip.getMaxRider()) == 0){
+                    Toast.makeText(getApplicationContext(), "Trip Fully booked!", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(paymentPage.this, MainActivity.class);
+                    startActivity(intent1);
+                    finish();
                     return;
                 }
 
                 if (user != null) {
+                    //decrement the seat number when tripe is booked
+                    int seat = Integer.parseInt(trip.getMaxRider());
+                    seat-=1;
+                    String passengers = Integer.toString(seat);
+                    tripReference.child(trip.getTripID()).child("maxRider").setValue(passengers);
+
+
                     String userName = user.getEmail();
-
-                    database = FirebaseDatabase.getInstance();
-                    reference = database.getReference("orders");
-                    ref = database.getReference("trips");
-
-                    ref.child(ridersNum).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                tripsData trip = dataSnapshot.getValue(tripsData.class);
-
-                                // Decrease maxRider by 1
-                                int currentMaxRider = Integer.parseInt(trip.getMaxRider());
-                                if (currentMaxRider > 0) {
-                                    currentMaxRider--;
-
-                                    // Update the maxRider for the specific trip
-                                    ref.child(ridersNum).child("maxRider").setValue(String.valueOf(currentMaxRider));
-                                } else {
-                                    // Handle the case where maxRider is already 0
-                                    Toast.makeText(getApplicationContext(), "No available seats in the trip",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            // Handle database error
-                            Toast.makeText(getApplicationContext(), "Error updating maxRider: " + databaseError.getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-
+                    orderReference = FirebaseDatabase.getInstance().getReference("orders");
 
                     String tripState,fromInput, toInput, priceInput, numInput, selectedTime,
                             userID,userEmail,orderID,driverStatus;
@@ -137,16 +131,16 @@ public class paymentPage extends AppCompatActivity {
 
                     userID = userName != null ? userName : "";
                     id = id + 1;
+                    //set trip id to increment with each new order
                     String orderId = "order" + Integer.toString(id);
                     orderID=orderId;
 
                     // Include the user's name in the order
-                    historyHelper helperClass = new historyHelper(tripState,fromInput, toInput, priceInput, numInput,
-                            selectedTime, userID,userEmail,orderID,driverStatus);
+                    historyHelper helperClass = new historyHelper(tripState,fromInput, toInput,
+                            priceInput, numInput, selectedTime, userID,userEmail,orderID,
+                            driverStatus);
 
-                    reference.child(orderId).setValue(helperClass);
-
-
+                    orderReference.child(orderId).setValue(helperClass);
                     Intent intent1 = new Intent(getApplicationContext(), historyPage.class);
                     startActivity(intent1);
 
@@ -160,13 +154,6 @@ public class paymentPage extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    // Check if an order with the given ID already exists
-    private boolean isOrderIdExists(int orderId) {
-        // You may need to modify this part based on your database structure
-        DatabaseReference orderRef = reference.child("order" + orderId);
-        return orderRef != null;
     }
 
     // Extract and return the numerical part of the order ID

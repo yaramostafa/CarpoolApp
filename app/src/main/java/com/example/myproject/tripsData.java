@@ -1,11 +1,19 @@
 package com.example.myproject;
 
 public class tripsData {
-    String timeTrip,priceTrip,numTrip,toTrip,fromTrip,driverEmail,driverStatus,maxRider;
+    String timeTrip,priceTrip,numTrip,toTrip,fromTrip,driverEmail,driverStatus,maxRider,tripID;
     tripsData(){}
 
     public String getDriverEmail() {
         return driverEmail;
+    }
+
+    public String getTripID() {
+        return tripID;
+    }
+
+    public void setTripID(String tripID) {
+        this.tripID = tripID;
     }
 
     public String getMaxRider() {
