@@ -15,8 +15,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class UserProfile extends AppCompatActivity {
-    TextView email, name;
+    TextView email, name,time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,13 @@ public class UserProfile extends AppCompatActivity {
 
         email = findViewById(R.id.emailTextView);
         name = findViewById(R.id.nameTextView);
+        time = findViewById(R.id.tripsTextView);
+
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.getDefault());
+        String currentTime = sdf.format(calendar.getTime());
+        time.setText("Current Time: " + currentTime);
 
         // Get the current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

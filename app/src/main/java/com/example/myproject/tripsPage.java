@@ -71,6 +71,7 @@ public class tripsPage extends AppCompatActivity {
                 intent.putExtra("driver_content", list.get(position).getDriverEmail());
                 intent.putExtra("driver_tripState", list.get(position).getDriverStatus());
                 intent.putExtra("ridersNum", list.get(position).getMaxRider());
+                intent.putExtra("tripsID", list.get(position).getTripID());
 
                 startActivity(intent);
             }

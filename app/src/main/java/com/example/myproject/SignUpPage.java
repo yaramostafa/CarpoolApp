@@ -84,6 +84,10 @@ public class SignUpPage extends AppCompatActivity {
             Toast.makeText(this,"Please enter name", Toast.LENGTH_LONG).show();
             return;
         }
+        if (!createEmail.endsWith("@eng.asu.edu.eg")) {
+            Toast.makeText(this, "Invalid email domain. Please use @eng.asu.edu.eg", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         firebaseAuth.createUserWithEmailAndPassword(createEmail, createPassword)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

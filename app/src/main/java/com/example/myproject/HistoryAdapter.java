@@ -37,18 +37,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.trip_price.setText(myHistory.getPriceTrip());
         holder.car_num.setText(myHistory.getNumTrip());
         holder.trip_time.setText(myHistory.getTimeTrip());
-
-
     }
 
     @Override
     public int getItemCount() {
         return listH.size();
     }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView trip_to,trip_from,trip_price,car_num,trip_time,status;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             status=itemView.findViewById(R.id.statusTrip);
