@@ -114,10 +114,7 @@ public class tripsPage extends AppCompatActivity {
             intent = new Intent(getApplicationContext(), historyPage.class);
             startActivity(intent);
             return true;
-        } /*else if (id == R.id.action_cart) {
-            intent = new Intent(homePage.this, CartPage.class);
-            startActivity(intent);
-            return true;}*/
+        }
          else if (id == R.id.action_profile) {
             intent=new Intent(getApplicationContext(),UserProfile.class);
             startActivity(intent);

@@ -47,7 +47,7 @@ public class paymentPage extends AppCompatActivity {
         String status = "pending";
         String driverState = getIntent().getStringExtra("driver_tripState");;
         String driverName=getIntent().getStringExtra("driver_content");
-        String ridersNum=getIntent().getStringExtra("ridersNum");
+        //String ridersNum=getIntent().getStringExtra("ridersNum");
         String tripid=getIntent().getStringExtra("tripsID");
 
         // Display the received text content in a TextView or use it as needed
@@ -57,15 +57,19 @@ public class paymentPage extends AppCompatActivity {
         textViewReceived2.setText("From: " + from);
         TextView textViewReceived3 = findViewById(R.id.paymentPrice);
         textViewReceived3.setText("Trip Price: " + price);
+        TextView textViewReceived4 = findViewById(R.id.paymentCarNum);
+        textViewReceived4.setText("Car Number: " + carNum);
+
 
         payBtn1 = findViewById(R.id.payBtn);
 
-        orderReference.orderByKey().limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+        orderReference.orderByKey().limitToLast(1).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                     String lastTripId = childSnapshot.getKey();
                     id = extractIdFromOrderId(lastTripId);
+
                 }
                 id = id > 0 ? id : 0;
 
@@ -77,7 +81,7 @@ public class paymentPage extends AppCompatActivity {
             }
         });
         Query checkTripDatabase = tripReference.orderByChild("tripID").equalTo(tripid);
-        checkTripDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        checkTripDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
@@ -132,7 +136,7 @@ public class paymentPage extends AppCompatActivity {
                     userID = userName != null ? userName : "";
                     id = id + 1;
                     //set trip id to increment with each new order
-                    String orderId = "order" + Integer.toString(id);
+                    String orderId = "order" + String.format("%03d", id);
                     orderID=orderId;
 
                     // Include the user's name in the order
@@ -157,8 +161,13 @@ public class paymentPage extends AppCompatActivity {
     }
 
     // Extract and return the numerical part of the order ID
-    private int extractIdFromOrderId(String tripId) {
-
-        return Integer.parseInt(tripId.replaceAll("\\D+", ""));
+    private int extractIdFromOrderId(String orderId) {
+        try {
+            // Remove the "order" prefix and parse the remaining part as an integer
+            return Integer.parseInt(orderId.replace("order", ""));
+        } catch (NumberFormatException e) {
+            // Handle the case where parsing fails, e.g., if the numeric part is not an integer
+            return 0;
+        }
     }
 }

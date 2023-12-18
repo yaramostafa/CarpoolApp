@@ -1,11 +1,15 @@
 package com.example.myproject;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -14,13 +18,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class UserProfile extends AppCompatActivity {
-    TextView email, name,time;
+
+    TextView email, name, time;
+    private UserRepository userRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class UserProfile extends AppCompatActivity {
         name = findViewById(R.id.nameTextView);
         time = findViewById(R.id.tripsTextView);
 
+        userRepository = new UserRepository(this);
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.getDefault());
@@ -44,29 +50,14 @@ public class UserProfile extends AppCompatActivity {
             // Get the user ID
             String userId = user.getUid();
 
-            // Reference to the "users" node in the database
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
-
-            // Read data from the database
-            userRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        // Retrieve user data
-                        String userEmail = dataSnapshot.child("email").getValue(String.class);
-                        String userName = dataSnapshot.child("uniID").getValue(String.class);
-
-                        // Set the values to TextViews
-                        email.setText(userEmail);
-                        name.setText(userName);
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    // Handle errors
-                }
-            });
+            // Check for internet connectivity
+            if (isNetworkAvailable()) {
+                // If internet is available, fetch data from Firebase
+                fetchDataFromFirebase(userId);
+            } else {
+                // If no internet, fetch data from Room database
+                fetchDataFromRoom(userId);
+            }
         }
 
         ImageButton btn = findViewById(R.id.logOut);
@@ -89,5 +80,76 @@ public class UserProfile extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void fetchDataFromFirebase(String userId) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String userEmail = dataSnapshot.child("email").getValue(String.class);
+                    String userName = dataSnapshot.child("uniID").getValue(String.class);
+
+                    // Save data to Room database
+                    saveDataToRoom(userId, userEmail, userName);
+
+                    // Set the values to TextViews
+                    runOnUiThread(() -> {
+                        email.setText(userEmail);
+                        name.setText(userName);
+                    });
+                } else {
+                    // If data is not available from Firebase, try fetching from Room
+                    fetchDataFromRoom(userId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle errors
+            }
+        });
+    }
+
+    private void fetchDataFromRoom(String userId) {
+        new AsyncTask<String, Void, UserEntity>() {
+            @Override
+            protected UserEntity doInBackground(String... userIds) {
+                return userRepository.getUserById(userIds[0]);
+            }
+
+            @Override
+            protected void onPostExecute(UserEntity userEntity) {
+                if (userEntity != null) {
+                    runOnUiThread(() -> {
+                        email.setText(userEntity.email);
+                        name.setText(userEntity.uniID);
+                    });
+                } else {
+                    // Handle the case where data is not available locally
+                }
+            }
+        }.execute(userId);
+    }
+
+
+    private void saveDataToRoom(String userId, String userEmail, String userName) {
+        // Save user data to Room database
+        UserEntity userEntity = new UserEntity();
+        userEntity.userId = userId;
+        userEntity.email = userEmail;
+        userEntity.uniID = userName;
+        userRepository.insertUser(userEntity);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
+        return false;
     }
 }
