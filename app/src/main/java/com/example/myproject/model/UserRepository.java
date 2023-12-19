@@ -1,7 +1,10 @@
-package com.example.myproject;
+package com.example.myproject.model;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 import androidx.room.Room;
 
 import java.util.concurrent.Executor;
@@ -23,5 +26,15 @@ public class UserRepository {
 
     public UserEntity getUserById(String userId) {
         return userDao.getUserById(userId);
+    }
+
+    @Entity(tableName = "users")
+    public static class UserEntity {
+        @PrimaryKey
+        @NonNull
+        public String userId;
+
+        public String email;
+        public String uniID;
     }
 }

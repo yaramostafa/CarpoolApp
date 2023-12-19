@@ -1,4 +1,4 @@
-package com.example.myproject;
+package com.example.myproject.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,12 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myproject.Helpers.historyHelper;
+import com.example.myproject.R;
+import com.example.myproject.historyPage;
+
 import java.util.ArrayList;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
-    ArrayList<historyData> listH;
+    ArrayList<historyHelper> listH;
     Context hist;
-    public HistoryAdapter(ArrayList<historyData> listH, historyPage activity) {
+    public HistoryAdapter(ArrayList<historyHelper> listH, historyPage activity) {
         this.listH=listH;
         this.hist=activity;
     }
@@ -30,7 +34,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        historyData myHistory = listH.get(position);
+        historyHelper myHistory = listH.get(position);
         holder.status.setText(myHistory.getTripState());
         holder.trip_to.setText(myHistory.getToTrip());
         holder.trip_from.setText(myHistory.getFromTrip());

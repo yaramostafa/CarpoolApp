@@ -10,19 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myproject.model.FirebaseHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity {
+public class SignInPage extends AppCompatActivity {
     TextView btn01;
     EditText emailIn,passIn;
     Button loginBtn;
@@ -34,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Intent intent1=new Intent(MainActivity.this, tripsPage.class);
+            Intent intent1=new Intent(SignInPage.this, tripsPage.class);
             startActivity(intent1);
             finish();
         }
@@ -45,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth =FirebaseAuth.getInstance();
+        FirebaseHelper firebaseDB = FirebaseHelper.getInstance();
 
         btn01 = findViewById(R.id.RegBtn);
         loginBtn =findViewById(R.id.loginButton);
@@ -55,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         btn01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(MainActivity.this, SignUpPage.class);
+                Intent intent1 = new Intent(SignInPage.this, SignUpPage.class);
                 startActivity(intent1);
             }
         });
@@ -67,11 +63,11 @@ public class MainActivity extends AppCompatActivity {
                 String Password  = passIn.getText().toString();
 
                 if(TextUtils.isEmpty(Email)){
-                    Toast.makeText(MainActivity.this,"Please enter email",Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignInPage.this,"Please enter email",Toast.LENGTH_LONG).show();
                     return;
                 }
                 else if(TextUtils.isEmpty(Password)){
-                    Toast.makeText(MainActivity.this,"Please enter password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignInPage.this,"Please enter password", Toast.LENGTH_LONG).show();
                     return;
                 }
                 mAuth.signInWithEmailAndPassword(Email, Password)
@@ -80,16 +76,16 @@ public class MainActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(MainActivity.this, "Succesful Login!",
+                                    Toast.makeText(SignInPage.this, "Succesful Login!",
                                             Toast.LENGTH_SHORT).show();
-                                    checkUser();
-                                    Intent intent1=new Intent(MainActivity.this, tripsPage.class);
+                                    firebaseDB.checkUser(mAuth);
+                                    Intent intent1=new Intent(SignInPage.this, tripsPage.class);
                                     startActivity(intent1);
                                     finish();
 
                                 } else {
                                     // If sign in fails, display a message to the user.
-                                    Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.makeText(SignInPage.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -98,35 +94,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void checkUser(){
-        FirebaseUser user = mAuth.getCurrentUser();
-        final String[] uniID = new String[1];
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
-        Query checkUserDatabase= reference.orderByChild("uid").equalTo(user.getUid());
-        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("drivers");
-        Query checkDriverDatabase  = reference2.orderByChild("uid").equalTo(user.getUid());
-        checkDriverDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    uniID[0] =  snapshot.child(user.getUid()).child("uniID").getValue(String.class);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
-                    HelperClass helperClass=new HelperClass(uniID[0],user.getEmail(),user.getUid());
-                    reference.child(user.getUid()).setValue(helperClass);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
+
 }

@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.myproject.model.UserRepository;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,13 +67,13 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent2 = new Intent(UserProfile.this, MainActivity.class);
+                Intent intent2 = new Intent(UserProfile.this, SignInPage.class);
                 startActivity(intent2);
                 finish();
             }
         });
 
-        FloatingActionButton home = findViewById(R.id.floatingActionButton);
+        /*FloatingActionButton home = findViewById(R.id.floatingActionButton);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +81,7 @@ public class UserProfile extends AppCompatActivity {
                 startActivity(intent2);
                 finish();
             }
-        });
+        });*/
     }
 
     private void fetchDataFromFirebase(String userId) {
@@ -114,14 +116,14 @@ public class UserProfile extends AppCompatActivity {
     }
 
     private void fetchDataFromRoom(String userId) {
-        new AsyncTask<String, Void, UserEntity>() {
+        new AsyncTask<String, Void, UserRepository.UserEntity>() {
             @Override
-            protected UserEntity doInBackground(String... userIds) {
+            protected UserRepository.UserEntity doInBackground(String... userIds) {
                 return userRepository.getUserById(userIds[0]);
             }
 
             @Override
-            protected void onPostExecute(UserEntity userEntity) {
+            protected void onPostExecute(UserRepository.UserEntity userEntity) {
                 if (userEntity != null) {
                     runOnUiThread(() -> {
                         email.setText(userEntity.email);
@@ -137,7 +139,7 @@ public class UserProfile extends AppCompatActivity {
 
     private void saveDataToRoom(String userId, String userEmail, String userName) {
         // Save user data to Room database
-        UserEntity userEntity = new UserEntity();
+        UserRepository.UserEntity userEntity = new UserRepository.UserEntity();
         userEntity.userId = userId;
         userEntity.email = userEmail;
         userEntity.uniID = userName;

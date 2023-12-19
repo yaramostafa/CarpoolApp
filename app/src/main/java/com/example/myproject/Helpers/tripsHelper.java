@@ -1,8 +1,18 @@
-package com.example.myproject;
+package com.example.myproject.Helpers;
 
-public class tripsData {
+import java.util.ArrayList;
+
+public class tripsHelper {
     String timeTrip,priceTrip,numTrip,toTrip,fromTrip,driverEmail,driverStatus,maxRider,tripID,tripData;
-    tripsData(){}
+    ArrayList<String> orders;
+    tripsHelper(){}
+
+    public ArrayList<String> getOrders() {
+        return orders;
+    }
+    public void setOrders(ArrayList<String> orders) {
+        this.orders = orders;
+    }
 
     public String getDriverEmail() {
         return driverEmail;

@@ -1,4 +1,4 @@
-package com.example.myproject;
+package com.example.myproject.model;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -9,8 +9,8 @@ import androidx.room.Query;
 @Dao
 public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertUser(UserEntity user);
+    void insertUser(UserRepository.UserEntity user);
 
     @Query("SELECT * FROM users WHERE userId = :userId")
-    UserEntity getUserById(String userId);
+    UserRepository.UserEntity getUserById(String userId);
 }

@@ -1,4 +1,4 @@
-package com.example.myproject;
+package com.example.myproject.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,13 +9,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myproject.Helpers.tripsHelper;
+import com.example.myproject.R;
+import com.example.myproject.tripsPage;
+
 import java.util.ArrayList;
 
 public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder>{
 
-    static ArrayList<tripsData> list;
+    static ArrayList<tripsHelper> list;
     Context context;
-    public TripsAdapter(ArrayList<tripsData> list, tripsPage activity) {
+    public TripsAdapter(ArrayList<tripsHelper> list, tripsPage activity) {
         this.list=list;
         this.context=activity;
     }
@@ -39,7 +43,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        tripsData myTripDataList=list.get(position);
+        tripsHelper myTripDataList=list.get(position);
         holder.trip_to.setText(myTripDataList.getToTrip());
         holder.trip_from.setText(myTripDataList.getFromTrip());
         holder.trip_price.setText(myTripDataList.getPriceTrip());
