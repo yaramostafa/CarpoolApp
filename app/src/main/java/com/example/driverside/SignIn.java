@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.driverside.model.FirebaseHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -46,14 +47,13 @@ public class SignIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        FirebaseHelper firebaseDB = FirebaseHelper.getInstance();
         mAuth =FirebaseAuth.getInstance();
 
         btn01 = findViewById(R.id.SignBtn);
         loginBtn =findViewById(R.id.loginButton);
         emailIn = findViewById(R.id.username);
         passIn = findViewById(R.id.password);
-
-
         btn01.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,8 +83,8 @@ public class SignIn extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
 
-                                    checkUser();
-                                    Toast.makeText(SignIn.this, "Succesful Login!",
+                                    firebaseDB.checkUser(mAuth);
+                                    Toast.makeText(SignIn.this, "Successful Login!",
                                             Toast.LENGTH_SHORT).show();
                                     Intent intent1=new Intent(SignIn.this,MainActivity.class);
                                     startActivity(intent1);
@@ -100,36 +100,5 @@ public class SignIn extends AppCompatActivity {
             }
         });
     }
-    public void checkUser(){
-        FirebaseUser user = mAuth.getCurrentUser();
-        final String[] uniID = new String[1];
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
-        Query checkUserDatabase= reference.orderByChild("uid").equalTo(user.getUid());
-        DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference("drivers");
-        Query checkDriverDatabase  = reference2.orderByChild("uid").equalTo(user.getUid());
-        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    uniID[0] =  snapshot.child(user.getUid()).child("uniID").getValue(String.class);
 
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-        checkDriverDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!snapshot.exists()){
-                    userDataHelper helperClass=new userDataHelper(uniID[0],user.getEmail(),user.getUid());
-                    reference2.child(user.getUid()).setValue(helperClass);
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
 }

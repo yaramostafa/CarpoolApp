@@ -19,10 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class NotificationFragment extends Fragment {
+public class ProfileFragment extends Fragment {
     Button req,hist;
-    private FirebaseAuth mAuth;
-    private DatabaseReference reference;
     TextView idText,emailText;
 
     @Override
@@ -38,10 +36,7 @@ public class NotificationFragment extends Fragment {
 
 
         if (user != null) {
-            // Get the user ID
             String userId = user.getUid();
-
-            // Reference to the "users" node in the database
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("drivers").child(userId);
 
             // Read data from the database
@@ -53,12 +48,10 @@ public class NotificationFragment extends Fragment {
                         String userEmail = dataSnapshot.child("email").getValue(String.class);
                         String userName = dataSnapshot.child("uniID").getValue(String.class);
 
-                        // Set the values to TextViews
                         idText.setText(userName);
                         emailText.setText(userEmail);
                     }
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     // Handle errors

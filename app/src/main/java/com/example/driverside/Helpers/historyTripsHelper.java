@@ -1,8 +1,8 @@
-package com.example.driverside;
+package com.example.driverside.Helpers;
 
-public class historyTripsData {
+public class historyTripsHelper {
     String timeTrip,priceTrip,numTrip,toTrip,fromTrip,driverStatus,driverEmail;
-    historyTripsData(){}
+    historyTripsHelper(){}
 
     public String getDriverEmail() {
         return driverEmail;

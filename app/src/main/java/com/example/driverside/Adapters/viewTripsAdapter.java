@@ -1,4 +1,4 @@
-package com.example.driverside;
+package com.example.driverside.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,12 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.driverside.Helpers.viewTripsHelper;
+import com.example.driverside.R;
+import com.example.driverside.viewTripsPage;
+
 import java.util.ArrayList;
 
 public class viewTripsAdapter extends RecyclerView.Adapter<viewTripsAdapter.ViewHolder> {
-    ArrayList<viewTripsData> list;
+    ArrayList<viewTripsHelper> list;
     Context hist;
-    public viewTripsAdapter(ArrayList<viewTripsData> list, viewTripsPage activity) {
+    public viewTripsAdapter(ArrayList<viewTripsHelper> list, viewTripsPage activity) {
         this.list=list;
         this.hist=activity;
     }
@@ -41,7 +45,7 @@ public class viewTripsAdapter extends RecyclerView.Adapter<viewTripsAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull viewTripsAdapter.ViewHolder holder, int position) {
-        viewTripsData myHistory = list.get(position);
+        viewTripsHelper myHistory = list.get(position);
         holder.status.setText(myHistory.getDriverStatus());
         holder.trip_to.setText(myHistory.getToTrip());
         holder.trip_from.setText(myHistory.getFromTrip());

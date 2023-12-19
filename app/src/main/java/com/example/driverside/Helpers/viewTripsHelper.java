@@ -1,8 +1,8 @@
-package com.example.driverside;
+package com.example.driverside.Helpers;
 
-public class viewTripsData {
+public class viewTripsHelper {
     String timeTrip,priceTrip,numTrip,toTrip,fromTrip,driverStatus,driverEmail,orderId;
-    public viewTripsData(){
+    public viewTripsHelper(){
 
     }
 
@@ -14,7 +14,7 @@ public class viewTripsData {
         this.driverStatus = driverStatus;
     }
 
-    public viewTripsData(String timeTrip, String priceTrip, String numTrip, String toTrip, String fromTrip, String driverEmail, String driverStatus,String orderId) {
+    public viewTripsHelper(String timeTrip, String priceTrip, String numTrip, String toTrip, String fromTrip, String driverEmail, String driverStatus, String orderId) {
         this.timeTrip = timeTrip;
         this.priceTrip = priceTrip;
         this.numTrip = numTrip;

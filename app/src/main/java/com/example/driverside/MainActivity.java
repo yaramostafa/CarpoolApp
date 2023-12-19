@@ -1,12 +1,10 @@
 package com.example.driverside;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -16,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     HomeFragment homeFragment = new HomeFragment();
     SettingsFragment settingsFragment = new SettingsFragment();
-    NotificationFragment notificationFragment = new NotificationFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +24,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView  = findViewById(R.id.bottom_navigation);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
-
-        /*BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.notification);
-        badgeDrawable.setVisible(true);
-        badgeDrawable.setNumber(8);*/
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -39,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
                     return true;
                 } else if (itemId == R.id.Profile) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, notificationFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
                     return true;
                 } else if (itemId == R.id.settings) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, settingsFragment).commit();

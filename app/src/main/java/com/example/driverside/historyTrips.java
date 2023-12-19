@@ -2,26 +2,26 @@ package com.example.driverside;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.driverside.Adapters.historyTripsAdapter;
+import com.example.driverside.Helpers.historyTripsHelper;
+import com.example.driverside.model.FirebaseHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class historyTrips extends AppCompatActivity {
-    DatabaseReference ref;
-    ArrayList<historyTripsData> listH;
+
+    ArrayList<historyTripsHelper> listH;
     RecyclerView recyclerView;
     historyTripsAdapter myAdap;
     FirebaseAuth authT;
@@ -31,6 +31,7 @@ public class historyTrips extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_trips);
+        FirebaseHelper firebaseDB = FirebaseHelper.getInstance();
 
         authT=FirebaseAuth.getInstance();
         user= authT.getCurrentUser();
@@ -42,21 +43,19 @@ public class historyTrips extends AppCompatActivity {
 
 
         recyclerView = findViewById(R.id.recyclerViewHistory);
-        ref = FirebaseDatabase.getInstance().getReference("orders");
-
         recyclerView.setLayoutManager(new LinearLayoutManager(historyTrips.this));
 
         listH = new ArrayList<>();
         myAdap=new historyTripsAdapter(listH,this);
         recyclerView.setAdapter(myAdap);
 
-        ref.addValueEventListener(new ValueEventListener() {
+        firebaseDB.getOrderReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 listH.clear();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    historyTripsData tripH = dataSnapshot.getValue(historyTripsData.class);
+                    historyTripsHelper tripH = dataSnapshot.getValue(historyTripsHelper.class);
 
                     // Only add the historyData to the list if the email matches the current user's email
                     if (tripH  != null && tripH.getDriverEmail() != null && tripH.getDriverEmail().equals(user.getEmail())) {

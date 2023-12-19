@@ -11,20 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.driverside.Helpers.userDataHelper;
+import com.example.driverside.model.FirebaseHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUp extends AppCompatActivity {
-    FirebaseDatabase database;
-    DatabaseReference reference;
     private FirebaseAuth firebaseAuth;
     EditText emailReg,idUser,passReg;
     Button BtnReg;
+    FirebaseHelper firebaseDB = FirebaseHelper.getInstance();
 
     @Override
     public void onStart() {
@@ -82,18 +81,20 @@ public class SignUp extends AppCompatActivity {
             Toast.makeText(this,"Please enter name", Toast.LENGTH_LONG).show();
             return;
         }
+        if (!createEmail.endsWith("@eng.asu.edu.eg")) {
+            Toast.makeText(this, "Invalid email domain. Please use @eng.asu.edu.eg", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         firebaseAuth.createUserWithEmailAndPassword(createEmail, createPassword)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            database = FirebaseDatabase.getInstance();
-                            reference= database.getReference("drivers");
                             userDataHelper helperClass=new userDataHelper(createID,createEmail, user.getUid());
-                            reference.child(user.getUid()).setValue(helperClass);
-
+                            firebaseDB.getUserReference().child(user.getUid()).setValue(helperClass);
                             Toast.makeText(SignUp.this, "USER CREATED!!!",
                                     Toast.LENGTH_SHORT).show();
                             Intent intent1=new Intent(SignUp.this,SignIn.class);

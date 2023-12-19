@@ -1,4 +1,4 @@
-package com.example.driverside;
+package com.example.driverside.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.driverside.Helpers.tripRequestsHelper;
+import com.example.driverside.R;
+import com.example.driverside.tripsRequests;
 
 import java.util.ArrayList;
 

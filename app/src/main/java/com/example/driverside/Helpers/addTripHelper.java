@@ -1,10 +1,13 @@
-package com.example.driverside;
+package com.example.driverside.Helpers;
 
 public class addTripHelper {
-    String fromTrip,toTrip,priceTrip,numTrip,timeTrip,MaxRider,driverEmail,driverStatus;
+    String fromTrip,toTrip,priceTrip,numTrip,timeTrip,MaxRider,driverEmail,driverStatus,tripID,tripDate;
+    public addTripHelper() {
+        // Default constructor required for Firebase
+    }
 
     public addTripHelper(String fromTrip, String toTrip, String priceTrip, String numTrip, String timeTrip,
-                         String MaxRider, String driverEmail,String driverStatus) {
+                         String MaxRider, String driverEmail,String driverStatus,String tripID,String tripDate ) {
         this.fromTrip = fromTrip;
         this.toTrip = toTrip;
         this.priceTrip = priceTrip;
@@ -13,7 +16,25 @@ public class addTripHelper {
         this.MaxRider = MaxRider;
         this.driverEmail= driverEmail;
         this.driverStatus=driverStatus;
+        this.tripID=tripID;
+        this.tripDate=tripDate;
 
+    }
+
+    public String getTripDate() {
+        return tripDate;
+    }
+
+    public void setTripDate(String tripDate) {
+        this.tripDate = tripDate;
+    }
+
+    public String getTripID() {
+        return tripID;
+    }
+
+    public void setTripID(String tripID) {
+        this.tripID = tripID;
     }
 
     public String getDriverStatus() {

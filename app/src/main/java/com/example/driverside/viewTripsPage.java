@@ -9,28 +9,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.example.driverside.Adapters.viewTripsAdapter;
+import com.example.driverside.Helpers.viewTripsHelper;
+import com.example.driverside.model.FirebaseHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class viewTripsPage extends AppCompatActivity {
-    DatabaseReference ref;
-    ArrayList<viewTripsData> list;
+    ArrayList<viewTripsHelper> list;
     RecyclerView recyclerView;
     viewTripsAdapter myAdap;
     FirebaseAuth authT;
     FirebaseUser user;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_driver_trips);
+        FirebaseHelper firebaseDB = FirebaseHelper.getInstance();
+
         authT=FirebaseAuth.getInstance();
         user= authT.getCurrentUser();
         if(user==null){
@@ -39,9 +41,7 @@ public class viewTripsPage extends AppCompatActivity {
             finish();
         }
 
-
         recyclerView = findViewById(R.id.recyclerViewDriverTrips);
-        ref = FirebaseDatabase.getInstance().getReference("orders");
 
         recyclerView.setLayoutManager(new LinearLayoutManager(viewTripsPage.this));
 
@@ -56,8 +56,8 @@ public class viewTripsPage extends AppCompatActivity {
                 myAdap.notifyItemChanged(position);
                 // Get the orderId for the accepted order
                 String orderId = list.get(position).getOrderId();
-                DatabaseReference orderRef = ref.child(orderId).child("tripState");
-                DatabaseReference orderRef2 = ref.child(orderId).child("driverStatus");
+                DatabaseReference orderRef = firebaseDB.UpdateDriverStatus(orderId);
+                DatabaseReference orderRef2 = firebaseDB.UpdateUserStatus(orderId);
                 orderRef.setValue("Completed");
                 orderRef2.setValue("Completed");
             }
@@ -68,35 +68,29 @@ public class viewTripsPage extends AppCompatActivity {
 
                 // Get the orderId for the accepted order
                 String orderId = list.get(position).getOrderId();
-
-                DatabaseReference orderRef = ref.child(orderId).child("tripState");
-                DatabaseReference orderRef2 = ref.child(orderId).child("driverStatus");
+                DatabaseReference orderRef = firebaseDB.UpdateDriverStatus(orderId);
+                DatabaseReference orderRef2 = firebaseDB.UpdateUserStatus(orderId);
                 orderRef.setValue("Cancelled");
                 orderRef2.setValue("Cancelled");
-
             }
         });
 
-
-        ref.addValueEventListener(new ValueEventListener() {
+        firebaseDB.getOrderReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    viewTripsData tripDriver = dataSnapshot.getValue(viewTripsData.class);
-
+                    viewTripsHelper tripDriver = dataSnapshot.getValue(viewTripsHelper.class);
                     // Only add the historyData to the list if the email matches the current user's email
                     if (tripDriver != null && tripDriver.getDriverEmail() != null && tripDriver.getDriverEmail().equals(user.getEmail())) {
                         if(TextUtils.equals(tripDriver.getDriverStatus(),"ongoing")){
                             list.add(tripDriver);
                         }
-
                     }
                 }
                 myAdap.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

@@ -1,4 +1,4 @@
-package com.example.driverside;
+package com.example.driverside.Helpers;
 
 public class profileDataHelper {
     String uniID;
