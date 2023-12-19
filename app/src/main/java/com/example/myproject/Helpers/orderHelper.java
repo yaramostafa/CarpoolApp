@@ -1,12 +1,14 @@
-package com.example.myproject;
+package com.example.myproject.Helpers;
 
-public class historyHelper {
+import java.util.ArrayList;
+
+public class orderHelper {
     String tripState, fromTrip, toTrip, priceTrip, numTrip, timeTrip, userid,
             driverEmail, orderId,driverStatus;
 
-    public historyHelper(String tripState, String fromTrip, String toTrip, String priceTrip,
-                         String numTrip, String timeTrip, String userid, String driverEmail,
-                         String orderId, String driverStatus) {
+    public orderHelper(String tripState, String fromTrip, String toTrip, String priceTrip,
+                       String numTrip, String timeTrip, String userid, String driverEmail,
+                       String orderId, String driverStatus) {
         this.tripState = tripState;
         this.fromTrip = fromTrip;
         this.toTrip = toTrip;

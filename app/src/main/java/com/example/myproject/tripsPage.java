@@ -12,36 +12,47 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.example.myproject.Adapters.TripsAdapter;
+import com.example.myproject.Helpers.tripsHelper;
+import com.example.myproject.model.FirebaseHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class tripsPage extends AppCompatActivity {
-    DatabaseReference ref;
-    ArrayList<tripsData> list;
+    ArrayList<tripsHelper> list;
     RecyclerView recyclerView;
     TripsAdapter myAdapter;
     FirebaseAuth auth;
     FirebaseUser user;
     Button btnBook;
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if(currentUser == null){
+            Intent intent1=new Intent(tripsPage.this, SignInPage.class);
+            startActivity(intent1);
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         btnBook=findViewById(R.id.btnBook);
+        FirebaseHelper firebaseDB = FirebaseHelper.getInstance();
 
         auth=FirebaseAuth.getInstance();
         user= auth.getCurrentUser();
         if(user==null){
-            Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+            Intent intent=new Intent(getApplicationContext(), SignInPage.class);
             startActivity(intent);
             finish();
         }
@@ -51,7 +62,6 @@ public class tripsPage extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         recyclerView = findViewById(R.id.recyclerViewT);
-        ref = FirebaseDatabase.getInstance().getReference("trips");
 
         recyclerView.setLayoutManager(new LinearLayoutManager(tripsPage.this));
 
@@ -77,15 +87,14 @@ public class tripsPage extends AppCompatActivity {
             }
         });
 
-
-        ref.orderByChild("timeTrip").addValueEventListener(new ValueEventListener() {
+        firebaseDB.getTripsReference().orderByChild("timeTrip").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
-                    tripsData trip = dataSnapshot.getValue(tripsData.class);
+                    tripsHelper trip = dataSnapshot.getValue(tripsHelper.class);
                     if(Integer.parseInt(trip.getMaxRider()) > 0){
                         list.add(trip);
                     }
@@ -114,14 +123,10 @@ public class tripsPage extends AppCompatActivity {
             intent = new Intent(getApplicationContext(), historyPage.class);
             startActivity(intent);
             return true;
-        } /*else if (id == R.id.action_cart) {
-            intent = new Intent(homePage.this, CartPage.class);
-            startActivity(intent);
-            return true;}*/
+        }
          else if (id == R.id.action_profile) {
             intent=new Intent(getApplicationContext(),UserProfile.class);
             startActivity(intent);
-            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

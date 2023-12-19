@@ -1,8 +1,8 @@
-package com.example.myproject;
+package com.example.myproject.Helpers;
 
-public class historyData {
+public class historyHelper {
     String timeTrip,priceTrip,numTrip,toTrip,fromTrip,userid,tripState;
-    historyData(){}
+    historyHelper(){}
 
 
     public String getUserid() {

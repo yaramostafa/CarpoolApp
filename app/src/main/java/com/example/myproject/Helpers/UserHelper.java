@@ -1,6 +1,6 @@
-package com.example.myproject;
+package com.example.myproject.Helpers;
 
-public class HelperClass {
+public class UserHelper {
     String uniID, email,uid;
 
     public String getUid() {
@@ -23,11 +23,11 @@ public class HelperClass {
     public void setEmail(String email) {
         this.email = email;
     }
-    public HelperClass(String uniID, String email,String uid) {
+    public UserHelper(String uniID, String email, String uid) {
         this.uniID = uniID;
         this.email = email;
         this.uid=uid;
     }
-    public HelperClass() {
+    public UserHelper() {
     }
 }
